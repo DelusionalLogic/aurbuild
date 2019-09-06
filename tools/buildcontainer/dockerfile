@@ -1,0 +1,16 @@
+FROM archlinux/base
+
+RUN pacman -Syu --noconfirm \
+	&& pacman --noconfirm -S base-devel jq
+
+RUN mkdir /out/
+
+RUN useradd -m build
+
+COPY /buildpkg.sh /app/buildpkg
+RUN chmod +x /app/buildpkg
+
+VOLUME /pkgroot/
+VOLUME /out/
+
+ENTRYPOINT [ "/app/buildpkg" ]

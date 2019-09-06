@@ -1,0 +1,18 @@
+FROM archlinux/base
+
+RUN pacman -Syu --noconfirm \
+	&& pacman --noconfirm -S jq
+
+RUN mkdir /out/
+
+RUN useradd -m build
+
+COPY /parsepkg.sh /app/parsepkg
+RUN chmod +x /app/parsepkg
+
+VOLUME /pkgroot/
+VOLUME /out/
+
+USER build
+
+ENTRYPOINT [ "/app/parsepkg" ]
